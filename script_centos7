@@ -55,11 +55,11 @@ iptables -L >> ${DNAME}/${FNAME}
 echo "" >> ${DNAME}/${FNAME}
 
 echo "### yum upadte" >> ${DNAME}/${FNAME}
-yum -y update
+yum -y update >> ${DNAME}/${FNAME}
 echo "" >> ${DNAME}/${FNAME}
 
 echo "### usefull package install" >> ${DNAME}/${FNAME}
-yum -y install net-tools bind-utils psmisc screen bash-completion bzip2 zip unzip
+yum -y install net-tools bind-utils psmisc screen bash-completion bzip2 zip unzip  >> ${DNAME}/${FNAME}
 echo "" >> ${DNAME}/${FNAME}
 
 echo "### NIC settings information" >> ${DNAME}/${FNAME}
@@ -87,9 +87,9 @@ useradd -u ${USERID} -g ${GROUPID} -d /home/${USERNAME} ${USERNAME}
 passwd -d ${USERNAME}
 mkdir -p /home/${USERNAME}/.ssh
 chmod 755 /home/${USERNAME}/.ssh
-chown ${UNAME}:${GROUPNAME} /home/${USERNAME}/.ssh
+chown ${USERNAME}:${GROUPNAME} /home/${USERNAME}/.ssh
 cp -ip ~/.ssh/authorized_keys /home/${USERNAME}/.ssh/.
 chmod 600 /home/${USERNAME}/.ssh/authorized_keys
-chown ${UNAME}:${GROUPNAME} /home/${USERNAME}/.ssh/authorized_keys
+chown ${USERNAME}:${GROUPNAME} /home/${USERNAME}/.ssh/authorized_keys
 
 exit 0
