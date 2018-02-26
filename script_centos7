@@ -14,8 +14,10 @@ LANG=en_US.UTF-8
 echo "" >> ${DNAME}/${FNAME}
 
 echo "### LANG settings into .bash_profile" >> ${DNAME}/${FNAME}
+echo "## change $LANG to en_US" >> ${DNAME}/.bash_profile
 echo "LANG=en_US.UTF-8" >> ${DNAME}/.bash_profile
 echo "export LANG" >> ${DNAME}/.bash_profile
+echo "" >> ${DNAME}/.bash_profile
 echo "" >> ${DNAME}/${FNAME}
 
 echo "### kernel information" >> ${DNAME}/${FNAME}
@@ -55,11 +57,11 @@ iptables -L >> ${DNAME}/${FNAME}
 echo "" >> ${DNAME}/${FNAME}
 
 echo "### yum upadte" >> ${DNAME}/${FNAME}
-yum -y update >> ${DNAME}/${FNAME}
+yum -y update
 echo "" >> ${DNAME}/${FNAME}
 
 echo "### usefull package install" >> ${DNAME}/${FNAME}
-yum -y install net-tools bind-utils psmisc screen bash-completion bzip2 zip unzip  >> ${DNAME}/${FNAME}
+yum -y install net-tools bind-utils psmisc screen bash-completion bzip2 zip unzip
 echo "" >> ${DNAME}/${FNAME}
 
 echo "### NIC settings information" >> ${DNAME}/${FNAME}
@@ -91,5 +93,12 @@ chown ${USERNAME}:${GROUPNAME} /home/${USERNAME}/.ssh
 cp -ip ~/.ssh/authorized_keys /home/${USERNAME}/.ssh/.
 chmod 600 /home/${USERNAME}/.ssh/authorized_keys
 chown ${USERNAME}:${GROUPNAME} /home/${USERNAME}/.ssh/authorized_keys
+
+echo "### LANG settings into .bash_profile" >> ${DNAME}/${FNAME}
+echo "## change $LANG to en_US" >> /home/${USERNAME}/.bash_profile
+echo "LANG=en_US.UTF-8" >> /home/${USERNAME}/.bash_profile
+echo "export LANG" >> /home/${USERNAME}/.bash_profile
+echo "" >> /home/${USERNAME}/.bash_profile
+echo "" >> ${DNAME}/${FNAME}
 
 exit 0
