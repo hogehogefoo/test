@@ -1,0 +1,95 @@
+#!/bin/bash
+
+DNAME="/root"
+FNAME="initial_data.txt"
+
+USERNAME=kazuki
+USERID=1000
+GROUPNAME=kazx
+GROUPID=1000
+
+## system information
+echo "### LANG setting change" >> ${DNAME}/${FNAME}
+LANG=en_US.UTF-8
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### LANG settings into .bash_profile" >> ${DNAME}/${FNAME}
+echo "LANG=en_US.UTF-8" >> ${DNAME}/.bash_profile
+echo "export LANG" >> ${DNAME}/.bash_profile
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### kernel information" >> ${DNAME}/${FNAME}
+uname -a >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### centos-release information" >> ${DNAME}/${FNAME}
+more /etc/centos-release >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### timezone setting change" >> ${DNAME}/${FNAME}
+timedatectl set-timezone Asia/Tokyo
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### date information" >> ${DNAME}/${FNAME}
+date >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### last login information" >> ${DNAME}/${FNAME}
+last >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### partition information" >> ${DNAME}/${FNAME}
+cat /proc/partitions >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### filesystem information" >> ${DNAME}/${FNAME}
+df -Th >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### dns resolver information" >> ${DNAME}/${FNAME}
+more /etc/resolv.conf >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### iptables settings information" >> ${DNAME}/${FNAME}
+iptables -L >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### yum upadte" >> ${DNAME}/${FNAME}
+yum -y update
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### usefull package install" >> ${DNAME}/${FNAME}
+yum -y install net-tools bind-utils psmisc screen bash-completion bzip2 zip unzip
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### NIC settings information" >> ${DNAME}/${FNAME}
+ifconfig >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### ip routing information" >> ${DNAME}/${FNAME}
+netstat -r >> ${DNAME}/${FNAME}
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### public nic setting change to down" >>  ${DNAME}/${FNAME}
+ifdown eth1
+echo "" >> ${DNAME}/${FNAME}
+
+echo "### selinux settings change to disable" >>  ${DNAME}/${FNAME}
+setenforce 0
+sed -i.org -e "s/SELINUX=permissive/SELINUX=disabled/g" /etc/sysconfig/selinux 
+echo "" >> ${DNAME}/${FNAME}
+
+## Create Group
+groupadd -g ${GROUPID} ${GROUPNAME}
+
+## Create User
+useradd -u ${USERID} -g ${GROUPID} -d /home/${USERNAME} ${USERNAME}
+passwd -d ${USERNAME}
+mkdir -p /home/${USERNAME}/.ssh
+chmod 755 /home/${USERNAME}/.ssh
+chown ${UNAME}:${GROUPNAME} /home/${USERNAME}/.ssh
+cp -ip ~/.ssh/authorized_keys /home/${USERNAME}/.ssh/.
+chmod 600 /home/${USERNAME}/.ssh/authorized_keys
+chown ${UNAME}:${GROUPNAME} /home/${USERNAME}/.ssh/authorized_keys
+
+exit 0
